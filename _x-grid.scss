@@ -1,0 +1,100 @@
+// Setting defaults for when no variables are passed on
+$default-gutter: 2.05%; // equals 20px for desktop
+$default-padding: 0;
+$default-margin: 0;
+
+// Grid mixin
+@mixin x-grid($margin: $default-margin, $padding: $default-padding) {
+
+  @if $margin != 0 {
+    margin: $margin;
+  }
+
+  @if $padding != 0 {
+    padding: $padding;
+  }
+
+  > div:first-of-type {
+    margin-left: 0;
+  }
+
+  // Solving float clearing issues
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+    line-height: 0;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+// Column mixin
+@mixin x-col($columns, $max-columns, $gutter: $default-gutter, $padding: $default-padding) {
+  $one-col: (100% - ($gutter * ($max-columns - 1))) / $max-columns;
+  box-sizing: border-box;
+  float: left;
+  margin-left: $gutter;
+
+  @if $padding != 0 {
+    padding: $padding;
+  }
+
+  width: ($one-col * $columns) + ($gutter * ($columns - 1));
+}
+
+// Move mixin
+@mixin x-move($col-move, $max-columns, $gutter: $default-gutter) {
+  $one-col: (100% - ($gutter * ($max-columns - 1))) / $max-columns;
+  $inverted-move: $max-columns - $col-move + 1;
+  left: 100%;
+  margin-left: -($one-col * $inverted-move) - ($gutter * ($inverted-move - 1)) !important;
+  position: relative;
+}
+
+// Setting preset grids
+
+// Mobile
+@media only screen and (max-device-width: 649px) {
+
+  .x-grid-m {
+    @include x-grid;
+  }
+
+  // Grid preset classes for 10 columns
+  @for $i from 1 through 4 {
+    .x-col-m-#{$i}-4 {
+      @include x-col($i, 4, $gutter: 6%);
+    }
+  }
+}
+
+// Tablet and desktop
+@media only screen and (min-device-width: 650px) {
+
+  .x-grid {
+    @include x-grid($margin: 0 0 20px 0);
+  }
+
+  // Grid preset classes for 10 columns
+  @for $i from 1 through 10 {
+    .x-col-#{$i}-10 {
+      @include x-col($i, 10);
+    }
+    .x-move-#{$i}-10 {
+      @include x-move($i, 10);
+    }
+  }
+
+  // Grid preset classes for 12 columns
+  @for $i from 1 through 12 {
+    .x-col-#{$i}-12 {
+      @include x-col($i, 12);
+    }
+    .x-move-#{$i}-12 {
+      @include x-move($i, 12);
+    }
+  }
+}

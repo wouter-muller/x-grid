@@ -57,7 +57,7 @@ $default-margin: 0;
 // Setting preset grids
 
 // Mobile
-@media only screen and (max-device-width: 649px) {
+@media only screen and (max-width: 649px) {
 
   .x-grid-m {
     @include x-grid;
@@ -72,7 +72,7 @@ $default-margin: 0;
 }
 
 // Tablet and desktop
-@media only screen and (min-device-width: 650px) {
+@media only screen and (min-width: 650px) {
 
   .x-grid {
     @include x-grid($margin: 0 0 20px 0);
